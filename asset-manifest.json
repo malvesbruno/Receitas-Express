@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/Receitas-Express/static/css/main.0b59ba49.css",
+    "main.js": "/Receitas-Express/static/js/main.20904490.js",
+    "static/js/453.a6a97343.chunk.js": "/Receitas-Express/static/js/453.a6a97343.chunk.js",
+    "static/media/bg.jpg": "/Receitas-Express/static/media/bg.8d610104f43a8ec4ade5.jpg",
+    "static/media/Summer Goals.ttf": "/Receitas-Express/static/media/Summer Goals.7393ef524dd9df91ab06.ttf",
+    "static/media/hat.png": "/Receitas-Express/static/media/hat.b181922786f27a73fad0.png",
+    "static/media/th.jpg": "/Receitas-Express/static/media/th.6ad5f74580e88fce4b4d.jpg",
+    "static/media/recipe_img.png": "/Receitas-Express/static/media/recipe_img.1afa4c1a452ebfbb14a1.png",
+    "static/media/avatar8.png": "/Receitas-Express/static/media/avatar8.9fadf718f65e921ad743.png",
+    "static/media/avatar6.png": "/Receitas-Express/static/media/avatar6.c06126eceaecbeb4696c.png",
+    "static/media/avatar4.png": "/Receitas-Express/static/media/avatar4.336993d3428bec6d5e0e.png",
+    "static/media/avatar5.png": "/Receitas-Express/static/media/avatar5.36e9aee74388aab6fd21.png",
+    "static/media/avatar7.png": "/Receitas-Express/static/media/avatar7.f631c4631c4a9bc91fd0.png",
+    "static/media/avatar2.png": "/Receitas-Express/static/media/avatar2.d764ddd66ac29a7e2cd8.png",
+    "static/media/avatar3.png": "/Receitas-Express/static/media/avatar3.7c96d41023a44aa2076f.png",
+    "static/media/avatar9.png": "/Receitas-Express/static/media/avatar9.376ba42767b91923e1fe.png",
+    "static/media/avatar1.png": "/Receitas-Express/static/media/avatar1.58b95449bbfc1dd13008.png",
+    "static/media/logo.svg": "/Receitas-Express/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/Receitas-Express/index.html",
+    "main.0b59ba49.css.map": "/Receitas-Express/static/css/main.0b59ba49.css.map",
+    "main.20904490.js.map": "/Receitas-Express/static/js/main.20904490.js.map",
+    "453.a6a97343.chunk.js.map": "/Receitas-Express/static/js/453.a6a97343.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0b59ba49.css",
+    "static/js/main.20904490.js"
+  ]
+}

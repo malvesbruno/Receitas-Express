@@ -135,35 +135,53 @@ const Recipe_Area = ({ nome, url, data, modo_preparo, ingredientes, usúario, to
                         setLoading(true);
                         if (recipe) {
                             let quantidadeAvaliacao = recipe.quantidadeAvaliacao || 0;
-                            let totalAvalicao = recipe.totalAvalicao || 0; // Corrigir o nome da variável
+                            let totalAvalicao = recipe.totalAvalicao || 0;
+                            console.log("Valor da nova avaliação (count):", count);
+                            console.log("Total antes de somar nova avaliação:", totalAvalicao);
+                            totalAvalicao += count;
+                            console.log("Total após somar nova avaliação:", totalAvalicao);
             
                             const user = await GetProfile(uuid);
                             if (user && user.length > 0) {
                                 let receitas_liked = user[0]['Receitas'] ? JSON.parse(user[0]['Receitas']) : [];
-                                const existingRateIndex = receitas_liked.findIndex(recipe => recipe.id === id);
+                                const existingRateIndex = receitas_liked.findIndex(r => r.id === id);
             
+                                // Se o usuário já avaliou a receita antes
                                 if (existingRateIndex !== -1) {
-                                    // Subtrair a avaliação antiga corretamente
-                                    totalAvalicao -= receitas_liked[existingRateIndex].rate;
-                                    // Adicionar a nova avaliação
+                                    // Subtrair a avaliação anterior do total
+                                    const previousRate = receitas_liked[existingRateIndex].rate;
+                                    totalAvalicao -= previousRate;
+            
+                                    // Adicionar a nova avaliação ao total
                                     totalAvalicao += count;
-                                    // Atualizar a avaliação no array de receitas curtidas
+            
+                                    // Atualizar a avaliação do usuário
                                     receitas_liked[existingRateIndex].rate = count;
                                 } else {
-                                    // Nova avaliação: incrementar quantidade e total
+                                    // Nova avaliação: incrementar quantidade e somar nova avaliação ao total
                                     quantidadeAvaliacao += 1;
                                     totalAvalicao += count;
-                                    receitas_liked.push({ 'id': id, 'rate': count });
+            
+                                    receitas_liked.push({ id: id, rate: count });
                                 }
             
                                 if (starsRef.current) {
                                     starsRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
                                 }
+                                 // Atualizar a receita com a nova avaliação total e quantidade de avaliações
+                                 await UpdateRecipeRate(id, totalAvalicao, quantidadeAvaliacao);
+            
+                                 // Atualizar o perfil do usuário com as receitas avaliadas
+                                 await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
                                 setLoading(false);
                                 await showMessage();
-                                await UpdateRecipeRate(id, totalAvalicao, quantidadeAvaliacao);
-                                await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
+            
+                                // Atualizar a avaliação atual do usuário no estado
                                 setCurrentUserRating(count);
+                                console.log("Valor da nova avaliação (count):", count);
+                                console.log("Total antes de somar nova avaliação:", totalAvalicao);
+                                totalAvalicao += count;
+                                console.log("Total após somar nova avaliação:", totalAvalicao);
                             }
                         }
                     } catch (error) {

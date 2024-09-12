@@ -125,47 +125,54 @@ const Recipe_Area = ({ nome, url, data, modo_preparo, ingredientes, usúario, to
             }, 3000);
             }
 
-    const handleStarClick = async (count) => {
-        if (typeof(uuid) !== 'undefined') {
-            try {
-                const recipe = await GetThePub(id);
-                if (topRef.current) {
-                    topRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
-                  }
-                setLoading(true)
-                if (recipe) {
-                    let quantidadeAvaliacao = recipe.quantidadeAvaliacao || 0;
-                    let totalAvalicao = recipe.totalAvalicao || 0;
-                    const user = await GetProfile(uuid);
-                    if (user && user.length > 0) {
-                        let receitas_liked = user[0]['Receitas'] ? JSON.parse(user[0]['Receitas']) : [];
-                        const existingRateIndex = receitas_liked.findIndex(recipe => recipe.id === id);
-                        if (existingRateIndex !== -1) {
-                            totalAvalicao = receitas_liked[existingRateIndex].rate
-                            totalAvalicao -= receitas_liked[existingRateIndex].rate;
-                            totalAvalicao += count;
-                            receitas_liked[existingRateIndex].rate = count;
-                        } else {
-                            quantidadeAvaliacao += 1;
-                            totalAvalicao += count;
-                            receitas_liked.push({ 'id': id, 'rate': count });
+            const handleStarClick = async (count) => {
+                if (typeof(uuid) !== 'undefined') {
+                    try {
+                        const recipe = await GetThePub(id);
+                        if (topRef.current) {
+                            topRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
                         }
-                        if (starsRef.current) {
-                            starsRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
-                          }
-                        setLoading(false)
-                        await showMessage()
-                        await UpdateRecipeRate(id, totalAvalicao, quantidadeAvaliacao);
-                        await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
-                        setCurrentUserRating(count);
+                        setLoading(true);
+                        if (recipe) {
+                            let quantidadeAvaliacao = recipe.quantidadeAvaliacao || 0;
+                            let totalAvalicao = recipe.totalAvalicao || 0; // Corrigir o nome da variável
+            
+                            const user = await GetProfile(uuid);
+                            if (user && user.length > 0) {
+                                let receitas_liked = user[0]['Receitas'] ? JSON.parse(user[0]['Receitas']) : [];
+                                const existingRateIndex = receitas_liked.findIndex(recipe => recipe.id === id);
+            
+                                if (existingRateIndex !== -1) {
+                                    // Subtrair a avaliação antiga corretamente
+                                    totalAvalicao -= receitas_liked[existingRateIndex].rate;
+                                    // Adicionar a nova avaliação
+                                    totalAvalicao += count;
+                                    // Atualizar a avaliação no array de receitas curtidas
+                                    receitas_liked[existingRateIndex].rate = count;
+                                } else {
+                                    // Nova avaliação: incrementar quantidade e total
+                                    quantidadeAvaliacao += 1;
+                                    totalAvalicao += count;
+                                    receitas_liked.push({ 'id': id, 'rate': count });
+                                }
+            
+                                if (starsRef.current) {
+                                    starsRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
+                                }
+                                setLoading(false);
+                                await showMessage();
+                                await UpdateRecipeRate(id, totalAvalicao, quantidadeAvaliacao);
+                                await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
+                                setCurrentUserRating(count);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Erro ao atualizar receitas curtidas:', error);
                     }
+                } else {
+                    navigate('/SignUp');
                 }
-            } catch (error) {
-                console.error('Erro ao atualizar receitas curtidas:', error);
-            }
-        } else {
-            navigate('/SignUp');
-        }
+            };
     };
 
     return (

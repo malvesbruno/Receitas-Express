@@ -173,7 +173,6 @@ const Recipe_Area = ({ nome, url, data, modo_preparo, ingredientes, usúario, to
                     navigate('/SignUp');
                 }
             };
-    };
 
     return (
         <>

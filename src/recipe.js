@@ -126,7 +126,7 @@ const Recipe_Area = ({ nome, url, data, modo_preparo, ingredientes, usúario, to
             }
 
             const handleStarClick = async (count) => {
-                if (typeof(uuid) !== 'undefined') {
+                if (typeof uuid !== 'undefined') {
                     try {
                         const recipe = await GetThePub(id);
                         if (topRef.current) {
@@ -135,57 +135,58 @@ const Recipe_Area = ({ nome, url, data, modo_preparo, ingredientes, usúario, to
                         setLoading(true);
                         if (recipe) {
                             let quantidadeAvaliacao = recipe.quantidadeAvaliacao || 0;
-                            let totalAvalicao = recipe.totalAvalicao || 0;
-                            console.log("Valor da nova avaliação (count):", count);
-                            console.log("Total antes de somar nova avaliação:", totalAvalicao);
-                            totalAvalicao += count;
-                            console.log("Total após somar nova avaliação:", totalAvalicao);
+                            let totalAvaliacao = recipe.totalAvaliacao || 0;  // Corrigi o nome da variável
             
                             const user = await GetProfile(uuid);
-                            if (user && user.length > 0) {
-                                let receitas_liked = user[0]['Receitas'] ? JSON.parse(user[0]['Receitas']) : [];
+                            if (user?.length > 0) {
+                                let receitas_liked = user[0]?.Receitas ? JSON.parse(user[0]?.Receitas) : [];
                                 const existingRateIndex = receitas_liked.findIndex(r => r.id === id);
             
-                                // Se o usuário já avaliou a receita antes
                                 if (existingRateIndex !== -1) {
-                                    // Subtrair a avaliação anterior do total
+                                    // Usuário já avaliou antes: subtrair a avaliação antiga e adicionar a nova
                                     const previousRate = receitas_liked[existingRateIndex].rate;
-                                    totalAvalicao -= previousRate;
             
-                                    // Adicionar a nova avaliação ao total
-                                    totalAvalicao += count;
+                                    console.log("Avaliação anterior:", previousRate);
+                                    console.log("Avaliação nova:", count);
+            
+                                    totalAvaliacao -= previousRate;  // Subtrair a avaliação antiga
+                                    totalAvaliacao += count;         // Adicionar a nova avaliação
             
                                     // Atualizar a avaliação do usuário
                                     receitas_liked[existingRateIndex].rate = count;
                                 } else {
-                                    // Nova avaliação: incrementar quantidade e somar nova avaliação ao total
+                                    // Novo usuário avaliando a receita pela primeira vez
                                     quantidadeAvaliacao += 1;
-                                    totalAvalicao += count;
+                                    totalAvaliacao += count;  // Somar nova avaliação ao total
             
                                     receitas_liked.push({ id: id, rate: count });
                                 }
             
+                                // Logs para verificação
+                                console.log("Quantidade de Avaliações após atualização:", quantidadeAvaliacao);
+                                console.log("Total de Avaliações após atualização:", totalAvaliacao);
+            
                                 if (starsRef.current) {
                                     starsRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
                                 }
-                                 // Atualizar a receita com a nova avaliação total e quantidade de avaliações
-                                 await UpdateRecipeRate(id, totalAvalicao, quantidadeAvaliacao);
             
-                                 // Atualizar o perfil do usuário com as receitas avaliadas
-                                 await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
                                 setLoading(false);
                                 await showMessage();
             
+                                // Atualizar a receita no banco de dados
+                                await UpdateRecipeRate(id, totalAvaliacao, quantidadeAvaliacao);
+            
+                                // Atualizar as receitas curtidas do usuário
+                                await UpdateRecipesLiked(uuid, JSON.stringify(receitas_liked));
+            
                                 // Atualizar a avaliação atual do usuário no estado
                                 setCurrentUserRating(count);
-                                console.log("Valor da nova avaliação (count):", count);
-                                console.log("Total antes de somar nova avaliação:", totalAvalicao);
-                                totalAvalicao += count;
-                                console.log("Total após somar nova avaliação:", totalAvalicao);
+                                navigate(0)
                             }
                         }
                     } catch (error) {
                         console.error('Erro ao atualizar receitas curtidas:', error);
+                        setLoading(false);  // Garantir que o loading seja desativado em caso de erro
                     }
                 } else {
                     navigate('/SignUp');

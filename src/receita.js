@@ -40,7 +40,7 @@ const Receita = () => {
           {mobileMenu?(<MobileMenu is_logged={is_logged} uuid={uuid} setMobileMenu={setMobileMenu}></MobileMenu>):(<></>)}
         <div className='button_mobile'>
           
-          {mobileMenu?(<><button className="btn_menu closeMenuButton" onClick={changeMobileMenu}><span class="line-md--menu-to-close-transition"></span></button></>):(<><button className="btn_menu" onClick={changeMobileMenu}><span className="material-symbols--menu"></span></button></>)}</div>
+          {mobileMenu?(<><button className="btn_menu closeMenuButton" onClick={changeMobileMenu}><span className="line-md--menu-to-close-transition"></span></button></>):(<><button className="btn_menu" onClick={changeMobileMenu}><span className="material-symbols--menu"></span></button></>)}</div>
         </div>
         <div className='mural'>
           <Recipe_Area nome={receita.Nome} data={receita.data} url={receita.url}
@@ -52,7 +52,7 @@ const Receita = () => {
           <>
               <div className="loading_place">
                   <div className="loading">
-                  <span class="line-md--loading-twotone-loop"></span>
+                  <span className="line-md--loading-twotone-loop"></span>
                   </div>
               </div>
           </>

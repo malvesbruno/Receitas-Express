@@ -25,17 +25,23 @@ const Home = () => {
 
   useEffect(() => {
     const Get_Cookies = async () => {
-      const email = Cookies.get('email');
-      const password = Cookies.get('password');
-      if (email && password && !logginOut) {
-        const user = await LogIn(email, password);
-        if (user) {
-          setLogged(true);
-          const uuid = user.uid;
-          navigate(`/${uuid}/home`);
-        }
+      try{
+        const email = Cookies.get('email');
+        const password = Cookies.get('password');
+        if (email && password && !logginOut) {
+          const user = await LogIn(email, password);
+          if (user) {
+            setLogged(true);
+            const uuid = user.uid;
+            navigate(`/${uuid}/home`);
+          }
+        
       }
+    } catch(error){
+      console.log(error)
+    } finally{
       setLoading(false); // Set loading to false after attempting to log in
+    }
     };
 
     Get_Cookies();

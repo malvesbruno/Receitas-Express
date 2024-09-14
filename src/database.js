@@ -200,8 +200,13 @@ const SignUp = async(email, password) => {
     } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
             return 'email_already_in_use'
-        } else{
-            throw(error)
+        } else if (error.code === 'auth/invalid-email') {
+            return 'invalid_email'
+        } else if (error.code === 'auth/weak-password') {
+            return 'weak_password'
+        } else {
+            console.error('Erro no cadastro:', error)
+            return 'houve um erro no código';
         }
     }
 }

@@ -105,26 +105,23 @@ const SignUpPage = () =>{
             let pp = 1
             let receita = ''
             var user = await SignUp(email, password)
-            if (user === 'email_already_in_use'){
-                setErrorMassage('Email já cadastrado')
-                error_change_color(email_ref)
-            } else if(!user || !cookies_allowed){
-                setErrorMassage('Email ou senha inválidos')
-                error_change_color(email_ref)
-                error_change_color(password_ref)
-            } else if(cookies_allowed){
+            if (typeof(user) === 'string'){
+                setErrorMassage(user)
+                if (user.includes('email')){
+                    error_change_color(email_ref)
+                } else{
+                    error_change_color(password_ref)
+                }
+            } else {
                 let uuid = user.uid
                 var AddedUser = await AddUser(email, nome, uuid, pp, receita)
-                console.log(user, uuid, AddedUser)
                 Cookies.set('email', email, { expires: 60 })
                 Cookies.set('password', password, { expires: 60 })
-                navigate(`/${uuid}/home`);
-            }
-             else {
-                let uuid = user.uid
-                var AddedUser = await AddUser(email, nome, uuid, pp, receita)
                 console.log(user, uuid, AddedUser)
                 navigate(`/${uuid}/home`);
+            }
+            if (!AddedUser) {
+                setErrorMassage('Erro ao adicionar o usuário no banco de dados');
             }
         }
         
